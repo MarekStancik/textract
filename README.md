@@ -1,3 +1,6 @@
+# Fixup Fork
+This is a fixup fork for inactive project `textract` addressing `xls` extraction issues.
+
 textract
 ========
 
