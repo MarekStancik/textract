@@ -1,3 +1,6 @@
+### Unreleased
+* Changed html extraction now also extract urls from a tags href
+
 ### 2.5.0
 * [#188](https://github.com/dbashford/textract/pull/188). PR updated `marked` depedency.
 * [#179](https://github.com/dbashford/textract/pull/179). PR added ability to capture powerpoint speaker notes.
