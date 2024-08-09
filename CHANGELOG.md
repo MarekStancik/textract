@@ -1,5 +1,12 @@
-### Unreleased
+### 2.5.3
 * Changed html extraction now also extract urls from a tags href
+
+### 2.5.2
+* Changed xls extraction now optimizes sheet range
+
+### 2.5.1
+* Added xlsx dependency
+* Removed J dependency
 
 ### 2.5.0
 * [#188](https://github.com/dbashford/textract/pull/188). PR updated `marked` depedency.
