@@ -104,7 +104,13 @@ textract pathToFile --preserveLineBreaks false --exec.maxBuffer 500000
 #### Import
 
 ```javascript
-var textract = require('textract');
+import textract from 'textract';
+```
+
+Named imports are also available:
+
+```javascript
+import { fromFileWithPath, fromUrl } from 'textract';
 ```
 
 #### APIs

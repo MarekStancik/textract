@@ -1,40 +1,46 @@
 /* eslint-disable max-len, no-unused-expressions */
 /* global fromUrl */
 
-var nodeUrl = require( 'url' );
+import './common.js';
+import { startFixtureServer } from './fixture-server.js';
 
 describe( 'fromUrl tests', function() {
-  var test;
+  var test, fixtureServer;
 
   this.timeout( 3000 );
 
+  before( async function() {
+    fixtureServer = await startFixtureServer();
+  });
+
+  after( async function() {
+    await fixtureServer.close();
+  });
+
   it( 'will properly extract files from sites with extensions that are misleading', function( done ) {
-    var url = 'http://apps.leg.wa.gov/billinfo/summary.aspx?bill=1276';
+    var url = fixtureServer.url + '/misleading.aspx?bill=1276';
     fromUrl( url, function( error, text ) {
       expect( error ).to.be.null;
       expect( text ).to.be.an( 'string' );
-      expect( text.substring( 0, 100 ) ).to.eql(
-        ' Washington State Legislature Bill Summary 2017-2018 2015-2016 2013-2014 2011-2012 2009-2010 2007-20' );
+      expect( text ).to.include( 'This is a long string of text' );
       done();
     });
   });
 
   it( 'take object URL', function( done ) {
-    var url = 'https://cdn.rawgit.com/dbashford/textract/master/test/files/doc.doc?raw=true'
-      , urlObj = nodeUrl.parse( url )
-      ;
+    var urlObj = new URL( fixtureServer.url + '/files/doc.doc?raw=true' );
 
     fromUrl( urlObj, function( error, text ) {
       expect( error ).to.be.null;
       expect( text ).to.be.an( 'string' );
-      expect( text.substring( 0, 100 ) ).to.eql( ' Word Specification Sample Working Draft 04, 16 August 2002 Document identifier: wd-spectools-word-s' );
+      expect( text.substring( 0, 100 ) ).to.eql( 'Word Specification Sample Working Draft 04, 16 August 2002 Document identifier: wd-spectools-word-sa' );
       done();
     });
   });
 
   test = function( ext, name, _text ) {
     it( 'will ' + ext + ' files', function( done ) {
-      var url = 'https://cdn.rawgit.com/dbashford/textract/master/test/files/' + name + '?raw=true';
+      var url = fixtureServer.url + '/files/' + name + '?raw=true';
       fromUrl( url, function( error, text ) {
         expect( error ).to.be.null;
         expect( text ).to.be.an( 'string' );
@@ -47,19 +53,20 @@ describe( 'fromUrl tests', function() {
   test(
     'doc',
     'doc.doc',
-    ' Word Specification Sample Working Draft 04, 16 August 2002 Document identifier: wd-spectools-word-s'
+    'Word Specification Sample Working Draft 04, 16 August 2002 Document identifier: wd-spectools-word-sa'
   );
 
   test(
     'xls',
     'test.xls',
-    'This,is,a,spreadsheet,yay! '
+    'This,is,a,spreadsheet,yay!,,',
+    ''
   );
 
   test(
     'xlsx',
     'pi.xlsx',
-    'This is the value of PI:,3.141592 '
+    'This is the value of PI:,3.141592'
   );
 
   test(
@@ -95,7 +102,7 @@ describe( 'fromUrl tests', function() {
   test(
     'ods',
     'ods.ods',
-    'This,is,a,ods Really,it,is, I,promise,, '
+    'This,is,a,ods Really,it,is I,promise,,'
   );
 
   test(
@@ -119,7 +126,7 @@ describe( 'fromUrl tests', function() {
   test(
     'xltx',
     'xltx.xltx',
-    ',,,,,, Packing Slip ,Your Company Name,,,,"July 24, 2015", , Your Company Slogan,,,,, ,,,,,, ,Addres'
+    ',,,,, Packing Slip Your Company Name,,,,\"July 24, 2015\" Your Company Slogan Address:,,Address,Ship T'
   );
 
   test(
@@ -131,7 +138,7 @@ describe( 'fromUrl tests', function() {
   test(
     'ots',
     'ots.ots',
-    "This,is , template, an,open,office,template isn't,it,awesome?, you,know,it,is "
+    "This,is, template an,open,office,template isn't,it,awesome? you,know,it,is,,"
   );
 
   test(

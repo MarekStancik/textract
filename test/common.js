@@ -1,6 +1,7 @@
-global.expect = require('chai').expect;
+import chai from 'chai';
+import textract from '../lib/index.js';
 
-var textract = require('../lib');
+global.expect = chai.expect;
 
 global.textract = textract;
 global.fromBufferWithName = textract.fromBufferWithName;

@@ -1,11 +1,25 @@
 /* eslint-disable max-len, no-unused-expressions */
 /* global textract, fromFileWithPath, fromFileWithMimeAndPath, fromBufferWithName, fromBufferWithMime, fromUrl */
 
-var path = require( 'path' )
-  , fs = require( 'fs' )
-  ;
+import './common.js';
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { startFixtureServer } from './fixture-server.js';
+
+const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 
 describe( 'textract', function() {
+  var fixtureServer;
+
+  before( async function() {
+    fixtureServer = await startFixtureServer();
+  });
+
+  after( async function() {
+    await fixtureServer.close();
+  });
+
   it( 'should be an object', function() {
     expect( textract ).to.be.an.instanceof( Object );
   });
@@ -188,12 +202,12 @@ describe( 'textract', function() {
     });
 
     it( 'fromUrl(url, options, callback)', function( done ) {
-      var url = 'https://cdn.rawgit.com/dbashford/textract/master/test/files/new%20docx(1).docx?raw=true';
+      var url = fixtureServer.url + '/files/new%20docx(1).docx?raw=true';
       fromUrl( url, {}, test( done ) );
     });
 
     it( 'fromUrl1(url,callback)', function( done ) {
-      var url = 'https://cdn.rawgit.com/dbashford/textract/master/test/files/new%20docx(1).docx?raw=true';
+      var url = fixtureServer.url + '/files/new%20docx(1).docx?raw=true';
       fromUrl( url, test( done ) );
     });
   });

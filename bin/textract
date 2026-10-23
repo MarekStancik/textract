@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
-var path = require( 'path' )
-  , fs = require( 'fs' )
-  , meow = require( 'meow' )
-  , help = 'Usage:\n' +
+import meow from 'meow';
+import cliCommand from '../lib/cli.js';
+var help = 'Usage:\n' +
            '  textract pathToFile\n\n' +
            'Flags:\n' +
            '  preserveLineBreaks: true/false (default: true)\n' +
@@ -20,13 +19,11 @@ var path = require( 'path' )
 
 var cli = meow({
   help: help,
-  pkg: '../package.json'
+  importMeta: import.meta
 });
 
 if ( !cli.input || cli.input.length === 0 ) {
   console.log( '\n' + help );
 } else {
-  var lib = path.join( path.dirname( fs.realpathSync( __filename ) ), '..', 'lib', 'cli.js' );
-  var textract = require( lib );
-  textract( cli.input[0], cli.flags );
+  cliCommand( cli.input[0], cli.flags );
 }

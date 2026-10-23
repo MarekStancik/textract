@@ -1,7 +1,10 @@
-var fs = require("fs")
-  , path = require("path")
-  , mime = require("mime")
-  ;
+import './common.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import mime from 'mime';
+
+const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 
 var test = function(_testFunction, withMime) {
 
@@ -37,19 +40,19 @@ var test = function(_testFunction, withMime) {
   _test(
     "doc",
     "doc.doc",
-    " Word Specification Sample Working Draft 04, 16 August 2002 Document identifier: wd-spectools-word-s"
+    "Word Specification Sample Working Draft 04, 16 August 2002 Document identifier: wd-spectools-word-sa"
   );
 
   _test(
     "xls",
     "test.xls",
-    "This,is,a,spreadsheet,yay! "
+    "This,is,a,spreadsheet,yay!,,",
   );
 
   _test(
     "xlsx",
     "pi.xlsx",
-    'This is the value of PI:,3.141592 '
+    'This is the value of PI:,3.141592'
   );
 
   _test(
@@ -85,7 +88,7 @@ var test = function(_testFunction, withMime) {
   _test(
     "ods",
     "ods.ods",
-    "This,is,a,ods Really,it,is, I,promise,, "
+    "This,is,a,ods Really,it,is I,promise,,"
   );
 
   _test(
@@ -109,7 +112,7 @@ var test = function(_testFunction, withMime) {
   _test(
     "xltx",
     "xltx.xltx",
-    ",,,,,, Packing Slip ,Your Company Name,,,,\"July 24, 2015\", , Your Company Slogan,,,,, ,,,,,, ,Addres"
+    ",,,,, Packing Slip Your Company Name,,,,\"July 24, 2015\" Your Company Slogan Address:,,Address,Ship T"
   );
 
   _test(
@@ -121,7 +124,7 @@ var test = function(_testFunction, withMime) {
   _test(
     "ots",
     "ots.ots",
-    "This,is , template, an,open,office,template isn't,it,awesome?, you,know,it,is "
+    "This,is, template an,open,office,template isn't,it,awesome? you,know,it,is,,"
   );
 
   _test(

@@ -1,3 +1,12 @@
+### 3.0.0
+* **Breaking:** Converted the package, extractors, and CLI to native ES modules. Consumers must use `import`/`export`; CommonJS `require()` is no longer supported.
+* **Breaking:** Raised the minimum supported Node.js version to 20.
+* Added package-level ESM entry-point exports and documented default and named imports.
+* Updated extractor integrations for current dependency APIs, including Marked, Cheerio, xmldom, Meow, and SheetJS.
+* Fixed nondeterministic EPUB chapter ordering by preserving the book's declared chapter order.
+* Improved spreadsheet extraction by parsing workbook buffers and reporting file-read/parsing errors consistently.
+* Replaced remote URL-test dependencies with local fixtures and made tests for optional external tools environment-aware.
+
 ### 2.5.3
 * Changed html extraction now also extract urls from a tags href
 

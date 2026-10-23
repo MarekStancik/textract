@@ -1,5 +1,7 @@
 /* global fromUrl */
 
+import './common.js';
+
 var test = function( done ) {
   return function( error, text ) {
     expect( text ).to.be.null;
